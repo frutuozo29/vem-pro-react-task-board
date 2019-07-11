@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
-import { addTask } from './actions'
+import { addTask, delTask, compTask } from './actions'
 import { connect } from 'react-redux'
 
 
@@ -12,7 +12,7 @@ class App extends Component {
   render() {
 
     const { board } = this.props
-    const { createTask } = this.props
+    const { createTask, removeTask, completedTask } = this.props
 
     return (
       <div className="App">
@@ -29,7 +29,28 @@ class App extends Component {
           }}
         >Adicionar Task</button>
         <ul>
-          {board.map(task => <li key={task}>{task}</li>)}
+          {board.map(task => (
+            <li
+              key={task.id}
+              className="item"
+            >
+              <span className={task.completed ? 'completed' : ''}>
+                {task.name}
+              </span>
+              <button onClick={() => { removeTask(task) }}>
+                remover
+              </button>
+
+              <button
+                onClick={() => {
+                  completedTask(task.id)
+                }}
+              >
+                Concluir
+              </button>
+            </li>
+
+          ))}
         </ul>
       </div>
     );
@@ -41,7 +62,9 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = (dispatch) => ({
-  createTask: (task) => dispatch(addTask(task))
+  createTask: (task) => dispatch(addTask(task)),
+  removeTask: (task) => dispatch(delTask(task)),
+  completedTask: (id) => dispatch(compTask(id))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

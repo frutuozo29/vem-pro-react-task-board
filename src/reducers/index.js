@@ -9,6 +9,14 @@ const reducer = (state = initialState, action) => {
       return {
         board: [...state.board, action.payload]
       }
+    case 'DEL_TASK':
+      return {
+        board: [...state.board.filter(task => task !== action.task)]
+      }
+    case 'COMP_TASK':
+      return {
+        board: [...state.board.map(task => task.id === action.id ? { ...task, completed: true } : task)]
+      }
     default:
       return state
   }
