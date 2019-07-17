@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
-import { addTask, delTask, compTask } from './actions'
+import { addTask, delTask, compTask, getTasks } from './actions'
 import { connect } from 'react-redux'
 
 
@@ -9,9 +9,15 @@ class App extends Component {
     taskName: ''
   }
 
+  componentDidMount() {
+    const { getTasks } = this.props
+
+    getTasks()
+  }
+
   render() {
 
-    const { board } = this.props
+    const { board, carregando, erro } = this.props
     const { createTask, removeTask, completedTask } = this.props
 
     return (
@@ -31,7 +37,7 @@ class App extends Component {
         <ul>
           {board.map(task => (
             <li
-              key={task.id}
+              key={task._id}
               className="item"
             >
               <span className={task.completed ? 'completed' : ''}>
@@ -52,19 +58,24 @@ class App extends Component {
 
           ))}
         </ul>
+        {carregando && <h3>carregando...</h3>}
+        {erro && <h3>Ocorreu um erro na requisição...</h3>}
       </div>
     );
   }
 }
 
 const mapStateToProps = (state) => ({
-  board: state.board
+  board: state.board,
+  carregando: state.carregando,
+  erro: state.erro
 })
 
 const mapDispatchToProps = (dispatch) => ({
   createTask: (task) => dispatch(addTask(task)),
   removeTask: (task) => dispatch(delTask(task)),
-  completedTask: (id) => dispatch(compTask(id))
+  completedTask: (id) => dispatch(compTask(id)),
+  getTasks: () => dispatch(getTasks())
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);
