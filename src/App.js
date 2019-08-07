@@ -22,44 +22,52 @@ class App extends Component {
 
     return (
       <div className="App">
-        <h2>Vem pro React Task Board</h2>
-        <input
-          value={this.state.taskName}
-          onChange={(event) => this.setState({ taskName: event.target.value })}
-          placeholder="Adicione uma nova task"
-        ></input>
-        <button
-          onClick={() => {
-            createTask(this.state.taskName)
-            this.setState({ taskName: '' })
-          }}
-        >Adicionar Task</button>
-        <ul>
-          {board.map(task => (
-            <li
-              key={task._id}
-              className="item"
-            >
-              <span className={task.completed ? 'completed' : ''}>
-                {task.name}
-              </span>
-              <button onClick={() => { removeTask(task) }}>
-                remover
-              </button>
-
-              <button
-                onClick={() => {
-                  completedTask(task.id)
-                }}
+        <header className="header">
+          <h2>Vem pro React Task Board</h2>
+        </header>
+        <section className="content">
+          <div className="input-container">
+            <input
+              value={this.state.taskName}
+              onChange={(event) => this.setState({ taskName: event.target.value })}
+              placeholder="Adicione uma nova task"
+            ></input>
+            <button
+              className="button"
+              onClick={() => {
+                createTask(this.state.taskName)
+                this.setState({ taskName: '' })
+              }}
+            >Adicionar Task</button>
+          </div>
+          <ul className="task-list">
+            {board.map(task => (
+              <li
+                key={task._id}
+                className="task-item"
               >
-                Concluir
+                <span className={task.completed ? 'completed' : ''}>
+                  {task.name}
+                </span>
+                <button className="button" onClick={() => { removeTask(task) }}>
+                  Remover
               </button>
-            </li>
 
-          ))}
-        </ul>
-        {carregando && <h3>carregando...</h3>}
-        {erro && <h3>Ocorreu um erro na requisição...</h3>}
+                <button
+                  className="button"
+                  onClick={() => {
+                    completedTask(task.id)
+                  }}
+                >
+                  Concluir
+              </button>
+              </li>
+
+            ))}
+          </ul>
+          {carregando && <h3>carregando...</h3>}
+          {erro && <h3>Ocorreu um erro na requisiï¿½ï¿½o...</h3>}
+        </section>
       </div>
     );
   }
